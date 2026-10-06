@@ -1,0 +1,134 @@
+[
+  {
+    "id": "uk-01",
+    "name": "Joshimath Outpost",
+    "district": "Chamoli",
+    "lat": 30.556,
+    "lng": 79.566,
+    "riskLevel": "CRITICAL",
+    "waterSource": "Natural Spring (Alaknanda Runoff)",
+    "turbidityNTU": 11.2,
+    "ph": 6.3,
+    "coliformCount": 48,
+    "activeCases": 24,
+    "weeklyTrend": [
+      { "day": "Day 1", "cases": 3 },
+      { "day": "Day 2", "cases": 6 },
+      { "day": "Day 3", "cases": 11 },
+      { "day": "Day 4", "cases": 15 },
+      { "day": "Day 5", "cases": 19 },
+      { "day": "Day 6", "cases": 22 },
+      { "day": "Day 7", "cases": 24 }
+    ]
+  },
+  {
+    "id": "uk-02",
+    "name": "Kedarnath Valley Base",
+    "district": "Rudraprayag",
+    "lat": 30.734,
+    "lng": 79.066,
+    "riskLevel": "CRITICAL",
+    "waterSource": "Glacial Stream Intake",
+    "turbidityNTU": 8.9,
+    "ph": 6.4,
+    "coliformCount": 35,
+    "activeCases": 17,
+    "weeklyTrend": [
+      { "day": "Day 1", "cases": 2 },
+      { "day": "Day 2", "cases": 4 },
+      { "day": "Day 3", "cases": 7 },
+      { "day": "Day 4", "cases": 10 },
+      { "day": "Day 5", "cases": 12 },
+      { "day": "Day 6", "cases": 15 },
+      { "day": "Day 7", "cases": 17 }
+    ]
+  },
+  {
+    "id": "uk-03",
+    "name": "Bhatwari Hamlet",
+    "district": "Uttarkashi",
+    "lat": 30.814,
+    "lng": 78.618,
+    "riskLevel": "WARNING",
+    "waterSource": "Gravity Piped Spring",
+    "turbidityNTU": 5.4,
+    "ph": 6.8,
+    "coliformCount": 12,
+    "activeCases": 6,
+    "weeklyTrend": [
+      { "day": "Day 1", "cases": 4 },
+      { "day": "Day 2", "cases": 5 },
+      { "day": "Day 3", "cases": 4 },
+      { "day": "Day 4", "cases": 6 },
+      { "day": "Day 5", "cases": 7 },
+      { "day": "Day 6", "cases": 6 },
+      { "day": "Day 7", "cases": 6 }
+    ]
+  },
+  {
+    "id": "uk-04",
+    "name": "Dharasu Bend",
+    "district": "Tehri Garhwal",
+    "lat": 30.383,
+    "lng": 78.482,
+    "riskLevel": "WARNING",
+    "waterSource": "Bhagirathi Tributary Pump",
+    "turbidityNTU": 4.6,
+    "ph": 7.1,
+    "coliformCount": 9,
+    "activeCases": 4,
+    "weeklyTrend": [
+      { "day": "Day 1", "cases": 2 },
+      { "day": "Day 2", "cases": 3 },
+      { "day": "Day 3", "cases": 3 },
+      { "day": "Day 4", "cases": 4 },
+      { "day": "Day 5", "cases": 5 },
+      { "day": "Day 6", "cases": 4 },
+      { "day": "Day 7", "cases": 4 }
+    ]
+  },
+  {
+    "id": "uk-05",
+    "name": "Ranikhet Cantonment East",
+    "district": "Almora",
+    "lat": 29.643,
+    "lng": 79.432,
+    "riskLevel": "SAFE",
+    "waterSource": "Treated Deep Spring Storage",
+    "turbidityNTU": 1.1,
+    "ph": 7.2,
+    "coliformCount": 0,
+    "activeCases": 0,
+    "weeklyTrend": [
+      { "day": "Day 1", "cases": 1 },
+      { "day": "Day 2", "cases": 0 },
+      { "day": "Day 3", "cases": 0 },
+      { "day": "Day 4", "cases": 0 },
+      { "day": "Day 5", "cases": 0 },
+      { "day": "Day 6", "cases": 0 },
+      { "day": "Day 7", "cases": 0 }
+    ]
+  },
+  {
+    "id": "uk-06",
+    "name": "Nainital Valley Spring",
+    "district": "Nainital",
+    "lat": 29.391,
+    "lng": 79.454,
+    "riskLevel": "SAFE",
+    "waterSource": "Chlorinated Municipal Reservoir",
+    "turbidityNTU": 0.8,
+    "ph": 7.4,
+    "coliformCount": 0,
+    "activeCases": 0,
+    "weeklyTrend": [
+      { "day": "Day 1", "cases": 0 },
+      { "day": "Day 2", "cases": 0 },
+      { "day": "Day 3", "cases": 0 },
+      { "day": "Day 4", "cases": 0 },
+      { "day": "Day 5", "cases": 0 },
+      { "day": "Day 6", "cases": 0 },
+      { "day": "Day 7", "cases": 0 }
+    ]
+  }
+]
