@@ -47,7 +47,6 @@ export default function App() {
     });
   }, [searchQuery, riskFilter]);
 
-  // Dynamically derived case total across stations
   const totalCases = useMemo(() => {
     return villagesData.reduce((acc, curr) => acc + curr.activeCases, 0);
   }, []);
@@ -60,7 +59,6 @@ export default function App() {
     e.preventDefault();
     if (!searchQuery.trim()) return;
 
-    // 1. Direct match check
     const localMatch = villagesData.find(
       (v) =>
         v.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -77,7 +75,6 @@ export default function App() {
     setIsSearching(true);
 
     try {
-      // Search query across OpenStreetMap Nominatim
       const response = await fetch(
         `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
           searchQuery + ', India'
@@ -142,9 +139,10 @@ export default function App() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#f7f5f0] text-stone-900 antialiased font-sans">
-      {/* Top Navbar */}
-      <header className="flex flex-wrap items-center justify-between border-b border-stone-200 bg-white px-4 py-2.5 shadow-2xs md:px-6">
+    // Locked viewport height on desktop, scrollable on mobile
+    <div className="flex min-h-screen lg:h-screen lg:overflow-hidden flex-col bg-[#f7f5f0] text-stone-900 antialiased font-sans">
+      {/* Top Navbar: Fixed height, does not shrink */}
+      <header className="shrink-0 flex flex-wrap items-center justify-between border-b border-stone-200 bg-white px-4 py-2.5 shadow-2xs md:px-6">
         <div className="flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-900 text-white font-bold text-sm tracking-tight">
             AP
@@ -233,9 +231,9 @@ export default function App() {
         </div>
       </header>
 
-      {/* Nearest Station Notification Banner with Regional Guard */}
+      {/* Nearest Station Notification Banner */}
       {nearestNotice && (
-        <div className={`border-b px-6 py-2 text-xs flex items-center justify-between shadow-2xs ${
+        <div className={`shrink-0 border-b px-6 py-2 text-xs flex items-center justify-between shadow-2xs ${
           nearestNotice.isOutside ? 'bg-amber-100/80 border-amber-300 text-amber-950' : 'bg-amber-50 border-amber-200 text-amber-900'
         }`}>
           {nearestNotice.error ? (
@@ -265,10 +263,10 @@ export default function App() {
         </div>
       )}
 
-      {/* Main Responsive Grid Layout */}
-      <main className="flex-1 grid grid-cols-1 gap-3 p-3 lg:grid-cols-12 overflow-hidden">
-        {/* Left Column: Outposts List (3 cols) */}
-        <div className="lg:col-span-3 flex flex-col gap-1.5 overflow-y-auto max-h-[350px] lg:max-h-full pr-1">
+      {/* Main Grid: min-h-0 prevents flex children from blowing out container height */}
+      <main className="flex-1 min-h-0 grid grid-cols-1 gap-3 p-3 lg:grid-cols-12 lg:overflow-hidden">
+        {/* Left Column: Independently scrollable on desktop */}
+        <div className="lg:col-span-3 flex flex-col gap-1.5 overflow-y-auto h-[350px] lg:h-full pr-1">
           <div className="flex items-center justify-between px-1 pb-1">
             <span className="text-xs font-semibold text-stone-500">
               {filteredVillages.length} stations
@@ -314,7 +312,7 @@ export default function App() {
           })}
         </div>
 
-        {/* Center Column: Map (5 cols) */}
+        {/* Center Column: Map stays pinned at full container height */}
         <div className="lg:col-span-5 h-[350px] lg:h-full min-h-[300px]">
           <MapSection
             villages={filteredVillages}
@@ -325,8 +323,8 @@ export default function App() {
           />
         </div>
 
-        {/* Right Column: Analytics Drawer (4 cols) */}
-        <div className="lg:col-span-4 overflow-y-auto">
+        {/* Right Column: Analytics Drawer independently scrollable if needed */}
+        <div className="lg:col-span-4 h-auto lg:h-full overflow-y-auto">
           <AnalyticsDrawer
             village={selectedVillage}
             allVillages={villagesData}
@@ -336,8 +334,8 @@ export default function App() {
         </div>
       </main>
 
-      {/* Persistent App Footer Disclaimer */}
-      <footer className="border-t border-stone-200 bg-white/80 px-4 py-1.5 text-center text-[10px] text-stone-500">
+      {/* Persistent App Footer: Fixed height, does not shrink */}
+      <footer className="shrink-0 border-t border-stone-200 bg-white/90 px-4 py-1.5 text-center text-[10px] text-stone-500">
         Demo simulation based on SIH25001 potable standards. Not intended for direct medical or government advisories.
       </footer>
     </div>
