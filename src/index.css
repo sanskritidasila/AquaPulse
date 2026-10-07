@@ -1,7 +1,36 @@
 @import "tailwindcss";
 
-/* Ensure Leaflet map container has full height */
+/* Background canvas */
+body {
+  background-color: #f7f5f0;
+  color: #1c1917;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Fix Leaflet map tile seam lines */
 .leaflet-container {
   width: 100%;
   height: 100%;
+  background-color: #e5e5e5;
+}
+
+.leaflet-tile {
+  outline: 1px solid transparent;
+}
+
+/* Custom DivIcon styling for Accessible Map Markers */
+.custom-glyph-pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  font-weight: 800;
+  font-size: 11px;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease-in-out;
+}
+
+.custom-glyph-pin:hover {
+  transform: scale(1.15);
 }

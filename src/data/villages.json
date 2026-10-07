@@ -130,5 +130,137 @@
       { "day": "Day 6", "cases": 0 },
       { "day": "Day 7", "cases": 0 }
     ]
+  },
+  {
+    "id": "uk-07",
+    "name": "Rishikesh Tapovan Intake",
+    "district": "Dehradun",
+    "lat": 30.131,
+    "lng": 78.324,
+    "riskLevel": "WARNING",
+    "waterSource": "Ganga Canal River Pump",
+    "turbidityNTU": 6.1,
+    "ph": 7.3,
+    "coliformCount": 16,
+    "activeCases": 8,
+    "weeklyTrend": [
+      { "day": "Day 1", "cases": 3 },
+      { "day": "Day 2", "cases": 5 },
+      { "day": "Day 3", "cases": 6 },
+      { "day": "Day 4", "cases": 8 },
+      { "day": "Day 5", "cases": 9 },
+      { "day": "Day 6", "cases": 8 },
+      { "day": "Day 7", "cases": 8 }
+    ]
+  },
+  {
+    "id": "uk-08",
+    "name": "Dehradun Rajpur Spring",
+    "district": "Dehradun",
+    "lat": 30.388,
+    "lng": 78.093,
+    "riskLevel": "SAFE",
+    "waterSource": "Municipal Chlorinated Sump",
+    "turbidityNTU": 1.4,
+    "ph": 7.0,
+    "coliformCount": 0,
+    "activeCases": 1,
+    "weeklyTrend": [
+      { "day": "Day 1", "cases": 0 },
+      { "day": "Day 2", "cases": 1 },
+      { "day": "Day 3", "cases": 1 },
+      { "day": "Day 4", "cases": 1 },
+      { "day": "Day 5", "cases": 0 },
+      { "day": "Day 6", "cases": 1 },
+      { "day": "Day 7", "cases": 1 }
+    ]
+  },
+  {
+    "id": "uk-09",
+    "name": "Uttarkashi Gyansu Post",
+    "district": "Uttarkashi",
+    "lat": 30.726,
+    "lng": 78.435,
+    "riskLevel": "CRITICAL",
+    "waterSource": "Bhagirathi Surface Extraction",
+    "turbidityNTU": 9.8,
+    "ph": 6.2,
+    "coliformCount": 41,
+    "activeCases": 19,
+    "weeklyTrend": [
+      { "day": "Day 1", "cases": 2 },
+      { "day": "Day 2", "cases": 5 },
+      { "day": "Day 3", "cases": 9 },
+      { "day": "Day 4", "cases": 13 },
+      { "day": "Day 5", "cases": 16 },
+      { "day": "Day 6", "cases": 18 },
+      { "day": "Day 7", "cases": 19 }
+    ]
+  },
+  {
+    "id": "uk-10",
+    "name": "Gopeshwar Kund Spring",
+    "district": "Chamoli",
+    "lat": 30.419,
+    "lng": 79.329,
+    "riskLevel": "SAFE",
+    "waterSource": "Protected Mountain Spring Storage",
+    "turbidityNTU": 1.9,
+    "ph": 7.5,
+    "coliformCount": 0,
+    "activeCases": 0,
+    "weeklyTrend": [
+      { "day": "Day 1", "cases": 0 },
+      { "day": "Day 2", "cases": 0 },
+      { "day": "Day 3", "cases": 0 },
+      { "day": "Day 4", "cases": 0 },
+      { "day": "Day 5", "cases": 0 },
+      { "day": "Day 6", "cases": 0 },
+      { "day": "Day 7", "cases": 0 }
+    ]
+  },
+  {
+    "id": "uk-11",
+    "name": "Pithoragarh Chandak Heights",
+    "district": "Pithoragarh",
+    "lat": 29.583,
+    "lng": 80.218,
+    "riskLevel": "WARNING",
+    "waterSource": "Local Piped Gravity Well",
+    "turbidityNTU": 5.7,
+    "ph": 6.7,
+    "coliformCount": 11,
+    "activeCases": 5,
+    "weeklyTrend": [
+      { "day": "Day 1", "cases": 1 },
+      { "day": "Day 2", "cases": 3 },
+      { "day": "Day 3", "cases": 4 },
+      { "day": "Day 4", "cases": 5 },
+      { "day": "Day 5", "cases": 5 },
+      { "day": "Day 6", "cases": 6 },
+      { "day": "Day 7", "cases": 5 }
+    ]
+  },
+  {
+    "id": "uk-12",
+    "name": "Bageshwar Saryu Confluence",
+    "district": "Bageshwar",
+    "lat": 29.839,
+    "lng": 79.771,
+    "riskLevel": "CRITICAL",
+    "waterSource": "Gomati-Saryu River Mixing Zone",
+    "turbidityNTU": 10.4,
+    "ph": 6.1,
+    "coliformCount": 38,
+    "activeCases": 15,
+    "weeklyTrend": [
+      { "day": "Day 1", "cases": 1 },
+      { "day": "Day 2", "cases": 4 },
+      { "day": "Day 3", "cases": 7 },
+      { "day": "Day 4", "cases": 10 },
+      { "day": "Day 5", "cases": 12 },
+      { "day": "Day 6", "cases": 14 },
+      { "day": "Day 7", "cases": 15 }
+    ]
   }
 ]
