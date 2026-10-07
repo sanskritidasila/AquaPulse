@@ -1,12 +1,11 @@
 import { useEffect, useRef, memo } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, CircleMarker, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Tooltip, CircleMarker, useMap } from 'react-leaflet';
 import L from 'leaflet';
 
 function MapController({ selectedVillage, searchCoords }) {
   const map = useMap();
   const hasInitializedRef = useRef(false);
 
-  // Exact framing for Uttarakhand
   const uttarakhandBounds = [
     [29.0, 77.8],
     [30.85, 80.3],
@@ -30,23 +29,23 @@ function MapController({ selectedVillage, searchCoords }) {
     if (searchCoords) {
       map.flyTo([searchCoords.lat, searchCoords.lng], 11, { duration: 1.2 });
     } else if (selectedVillage && hasInitializedRef.current) {
-      map.flyTo([selectedVillage.lat, selectedVillage.lng], 9.5, { duration: 1.0 });
+      map.flyTo([selectedVillage.lat, selectedVillage.lng], 9.2, { duration: 1.0 });
     }
   }, [selectedVillage, searchCoords, map]);
 
   return null;
 }
 
-// Generates custom HTML div icons for Field Mode
-const createGlyphIcon = (risk, isSelected) => {
+// Generate accessible SVG glyph DivIcon for Field Mode on map
+const createFieldGlyphIcon = (risk, isSelected) => {
   const glyph = risk === 'CRITICAL' ? '▲' : risk === 'WARNING' ? '◆' : '●';
   const bgColor = risk === 'CRITICAL' ? '#b91c1c' : risk === 'WARNING' ? '#c2410c' : '#15803d';
-  const size = isSelected ? 26 : 22;
-  const border = isSelected ? '2px solid #000000' : '1.5px solid #ffffff';
+  const size = isSelected ? 24 : 18;
+  const border = isSelected ? '2px solid #000000' : '1px solid #ffffff';
 
   return L.divIcon({
-    className: 'custom-glyph-pin-wrapper',
-    html: `<div class="custom-glyph-pin" style="background-color: ${bgColor}; width: ${size}px; height: ${size}px; border: ${border};">${glyph}</div>`,
+    className: 'field-glyph-pin',
+    html: `<div style="background-color: ${bgColor}; width: ${size}px; height: ${size}px; border-radius: 9999px; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: ${isSelected ? '11px' : '9px'}; font-weight: 800; border: ${border}; box-shadow: 0 1px 3px rgba(0,0,0,0.3);">${glyph}</div>`,
     iconSize: [size, size],
     iconAnchor: [size / 2, size / 2],
   });
@@ -79,10 +78,9 @@ function MapSection({
         ]}
         scrollWheelZoom={true}
         wheelDebounceTime={120}
-        zoomSnap={1} // Integer snap removes subpixel seam lines
+        zoomSnap={1}
         className="h-full w-full"
       >
-        {/* Crisp, clean basemap without boundary label clutter */}
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -101,7 +99,7 @@ function MapSection({
         {searchCoords && (
           <CircleMarker
             center={[searchCoords.lat, searchCoords.lng]}
-            radius={9}
+            radius={8}
             pathOptions={{
               color: '#0f766e',
               fillColor: '#2dd4bf',
@@ -119,7 +117,7 @@ function MapSection({
           </CircleMarker>
         )}
 
-        {/* Stations: Uses DivIcon in Field Mode, CircleMarker in Standard View */}
+        {/* All Monitored Stations */}
         {villages.map((village) => {
           const isSelected = selectedVillage?.id === village.id && !searchCoords;
           const color = getMarkerColor(village.riskLevel);
@@ -129,21 +127,14 @@ function MapSection({
               <Marker
                 key={village.id}
                 position={[village.lat, village.lng]}
-                icon={createGlyphIcon(village.riskLevel, isSelected)}
+                icon={createFieldGlyphIcon(village.riskLevel, isSelected)}
                 eventHandlers={{
                   click: () => onSelectVillage(village),
                 }}
               >
-                <Popup className="font-sans">
-                  <div className="p-1">
-                    <h3 className="font-bold text-xs text-stone-900">{village.name}</h3>
-                    <p className="text-[11px] text-stone-600">{village.district} District</p>
-                    <p className="text-[11px] mt-1 font-semibold" style={{ color }}>
-                      Status: {village.riskLevel}
-                    </p>
-                    <p className="text-[11px] text-stone-600">Active Cases: {village.activeCases}</p>
-                  </div>
-                </Popup>
+                <Tooltip direction="top" offset={[0, -10]} opacity={0.9}>
+                  <span className="text-[10px] font-bold">{village.name}</span>
+                </Tooltip>
               </Marker>
             );
           }
@@ -152,27 +143,20 @@ function MapSection({
             <CircleMarker
               key={village.id}
               center={[village.lat, village.lng]}
-              radius={isSelected ? 9 : 6}
+              radius={isSelected ? 8 : 5}
               pathOptions={{
                 color: isSelected ? '#1c1917' : color,
                 fillColor: color,
                 fillOpacity: 0.9,
-                weight: isSelected ? 3 : 1.5,
+                weight: isSelected ? 2.5 : 1.5,
               }}
               eventHandlers={{
                 click: () => onSelectVillage(village),
               }}
             >
-              <Popup className="font-sans">
-                <div className="p-1">
-                  <h3 className="font-bold text-xs text-stone-900">{village.name}</h3>
-                  <p className="text-[11px] text-stone-600">{village.district} District</p>
-                  <p className="text-[11px] mt-1 font-semibold" style={{ color }}>
-                    Status: {village.riskLevel}
-                  </p>
-                  <p className="text-[11px] text-stone-600">Active Cases: {village.activeCases}</p>
-                </div>
-              </Popup>
+              <Tooltip direction="top" offset={[0, -8]} opacity={0.9}>
+                <span className="text-[10px] font-bold">{village.name}</span>
+              </Tooltip>
             </CircleMarker>
           );
         })}

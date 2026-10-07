@@ -7,7 +7,7 @@ import {
   Tooltip,
   CartesianGrid,
 } from 'recharts';
-import { Droplets, Activity, AlertOctagon, ShieldCheck, AlertTriangle, Printer, Clock, MapPin } from 'lucide-react';
+import { Droplets, Activity, AlertOctagon, ShieldCheck, AlertTriangle, Printer, Clock } from 'lucide-react';
 
 function getDistanceKm(lat1, lon1, lat2, lon2) {
   const R = 6371;
@@ -27,7 +27,7 @@ export default function AnalyticsDrawer({ village, allVillages, onSelectVillage,
   if (!village) {
     return (
       <div className="flex h-full items-center justify-center rounded-xl border border-stone-200 bg-white p-6 text-xs text-stone-400">
-        Select a station to inspect telemetry data.
+        Select an outpost to inspect telemetry data.
       </div>
     );
   }
@@ -36,7 +36,7 @@ export default function AnalyticsDrawer({ village, allVillages, onSelectVillage,
   const isWarning = village.riskLevel === 'WARNING';
   const accentColor = isCritical ? '#b91c1c' : isWarning ? '#c2410c' : '#15803d';
 
-  // Dynamic pH evaluation
+  // Strict dynamic pH evaluation
   const isPhSafe = village.ph >= 6.5 && village.ph <= 8.5;
   const phStatusText = isPhSafe ? '6.5–8.5 (Normal)' : village.ph < 6.5 ? '< 6.5 (Acidic)' : '> 8.5 (Alkaline)';
   const phStatusColor = isPhSafe ? 'text-emerald-700' : 'text-red-700';
@@ -46,7 +46,7 @@ export default function AnalyticsDrawer({ village, allVillages, onSelectVillage,
     cases: item.cases,
   }));
 
-  // Calculate 2 nearest monitoring stations
+  // Nearest outposts calculation
   const nearbyStations = (allVillages || [])
     .filter((v) => v.id !== village.id)
     .map((v) => ({
@@ -59,6 +59,11 @@ export default function AnalyticsDrawer({ village, allVillages, onSelectVillage,
   return (
     <div className="flex h-full flex-col justify-between gap-3 rounded-xl border border-stone-200 bg-white p-4 shadow-2xs">
       <div>
+        {/* Prominent Print-Only Demo Disclaimer */}
+        <div className="hidden print:block mb-3 p-2 bg-amber-100 border border-amber-400 text-amber-900 text-xs font-bold text-center uppercase tracking-wide">
+          DEMO RECORD – SIMULATED SURVEILLANCE DATA ONLY · NOT AN OFFICIAL HEALTH ISSUANCE
+        </div>
+
         {/* Station Details Header */}
         <div className="border-b border-stone-100 pb-2.5">
           <div className="flex items-center justify-between">
@@ -97,6 +102,7 @@ export default function AnalyticsDrawer({ village, allVillages, onSelectVillage,
             </span>
           </div>
 
+          {/* pH Metric with clean typography */}
           <div className="rounded-lg border border-stone-200/70 bg-stone-50/70 p-2">
             <div className="flex items-center gap-1 text-[11px] text-stone-500 font-medium">
               <Activity className="h-3 w-3 text-teal-700" />
@@ -202,7 +208,7 @@ export default function AnalyticsDrawer({ village, allVillages, onSelectVillage,
           <button
             type="button"
             onClick={() => window.print()}
-            className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-md border border-stone-300 bg-white py-1 text-[11px] font-semibold text-stone-700 shadow-2xs hover:bg-stone-50 cursor-pointer"
+            className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-md border border-stone-300 bg-white py-1 text-[11px] font-semibold text-stone-700 shadow-2xs hover:bg-stone-50 print:hidden cursor-pointer"
           >
             <Printer className="h-3 w-3 text-stone-500" />
             <span>Print dispatch notice</span>
@@ -210,7 +216,7 @@ export default function AnalyticsDrawer({ village, allVillages, onSelectVillage,
         </div>
       </div>
 
-      {/* Footer Area: Fills empty space with live context */}
+      {/* Footer Area */}
       <div className="border-t border-stone-100 pt-2 text-[11px] text-stone-500">
         <div className="flex items-center justify-between mb-1.5">
           <div className="flex items-center gap-1">

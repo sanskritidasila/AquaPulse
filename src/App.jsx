@@ -9,7 +9,8 @@ import {
   Users, 
   Loader2, 
   Navigation, 
-  X 
+  X,
+  AlertCircle 
 } from 'lucide-react';
 
 function getDistanceKm(lat1, lon1, lat2, lon2) {
@@ -46,16 +47,20 @@ export default function App() {
     });
   }, [searchQuery, riskFilter]);
 
+  // Dynamically derived case total across stations
   const totalCases = useMemo(() => {
     return villagesData.reduce((acc, curr) => acc + curr.activeCases, 0);
   }, []);
 
-  const criticalCount = villagesData.filter((v) => v.riskLevel === 'CRITICAL').length;
+  const criticalCount = useMemo(() => {
+    return villagesData.filter((v) => v.riskLevel === 'CRITICAL').length;
+  }, []);
 
   const handleGeocodeSearch = async (e) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
 
+    // 1. Direct match check
     const localMatch = villagesData.find(
       (v) =>
         v.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -72,9 +77,10 @@ export default function App() {
     setIsSearching(true);
 
     try {
+      // Search query across OpenStreetMap Nominatim
       const response = await fetch(
         `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-          searchQuery + ', Uttarakhand, India'
+          searchQuery + ', India'
         )}`
       );
       const data = await response.json();
@@ -84,6 +90,7 @@ export default function App() {
         const searchedLat = parseFloat(place.lat);
         const searchedLng = parseFloat(place.lon);
         const placeName = place.display_name.split(',')[0];
+        const isUttarakhand = place.display_name.toLowerCase().includes('uttarakhand');
 
         let closestStation = villagesData[0];
         let minDistance = Infinity;
@@ -108,13 +115,14 @@ export default function App() {
           searchedPlace: placeName,
           nearestName: closestStation.name,
           distanceKm: minDistance,
+          isOutside: !isUttarakhand && minDistance > 120,
         });
       } else {
-        setNearestNotice({ error: `Location "${searchQuery}" not found in Uttarakhand.` });
+        setNearestNotice({ error: `Location "${searchQuery}" not found.` });
         setTimeout(() => setNearestNotice(null), 4000);
       }
     } catch {
-      setNearestNotice({ error: 'Search network error. Check connection.' });
+      setNearestNotice({ error: 'Search network timeout. Check connection.' });
       setTimeout(() => setNearestNotice(null), 4000);
     } finally {
       setIsSearching(false);
@@ -149,12 +157,12 @@ export default function App() {
               </span>
             </div>
             <p className="text-[11px] text-stone-500">
-              Water quality & health surveillance across 12 stations in Uttarakhand
+              Water quality & health surveillance across {villagesData.length} stations in Uttarakhand
             </p>
           </div>
         </div>
 
-        {/* Quick Regional Numbers */}
+        {/* Dynamic Regional Counters */}
         <div className="hidden lg:flex items-center gap-3 text-xs">
           <div className="flex items-center gap-1.5 rounded border border-stone-200 bg-stone-50 px-2.5 py-1 text-stone-600">
             <Users className="h-3.5 w-3.5 text-stone-500" />
@@ -193,7 +201,7 @@ export default function App() {
             )}
           </form>
 
-          {/* Simple Triage Buttons */}
+          {/* Risk Filters */}
           <div className="flex rounded border border-stone-200 bg-stone-100 p-0.5 text-xs">
             {['ALL', 'CRITICAL', 'WARNING', 'SAFE'].map((tier) => (
               <button
@@ -210,7 +218,7 @@ export default function App() {
             ))}
           </div>
 
-          {/* Field Mode Toggle Button */}
+          {/* Accessible Field Mode Switch */}
           <button
             onClick={() => setIsAccessibleMode(!isAccessibleMode)}
             className={`flex items-center gap-1.5 rounded px-2 py-1 text-xs border font-medium transition-all cursor-pointer ${
@@ -225,16 +233,25 @@ export default function App() {
         </div>
       </header>
 
-      {/* Nearest Station Notification Banner */}
+      {/* Nearest Station Notification Banner with Regional Guard */}
       {nearestNotice && (
-        <div className="bg-amber-50 border-b border-amber-200 px-6 py-2 text-xs text-amber-900 flex items-center justify-between shadow-2xs">
+        <div className={`border-b px-6 py-2 text-xs flex items-center justify-between shadow-2xs ${
+          nearestNotice.isOutside ? 'bg-amber-100/80 border-amber-300 text-amber-950' : 'bg-amber-50 border-amber-200 text-amber-900'
+        }`}>
           {nearestNotice.error ? (
             <span className="text-red-700 font-medium">{nearestNotice.error}</span>
           ) : (
             <div className="flex items-center gap-2">
-              <Navigation className="h-4 w-4 text-teal-800 shrink-0" />
+              {nearestNotice.isOutside ? (
+                <AlertCircle className="h-4 w-4 text-amber-700 shrink-0" />
+              ) : (
+                <Navigation className="h-4 w-4 text-teal-800 shrink-0" />
+              )}
               <span>
-                No station at <strong>{nearestNotice.searchedPlace}</strong>. Showing nearest: {' '}
+                {nearestNotice.isOutside && (
+                  <strong>Note: {nearestNotice.searchedPlace} is outside the Uttarakhand pilot zone ({nearestNotice.distanceKm} km away). </strong>
+                )}
+                Showing closest regional outpost: {' '}
                 <strong className="underline text-stone-950">{nearestNotice.nearestName}</strong> ({nearestNotice.distanceKm} km away).
               </span>
             </div>
@@ -254,7 +271,7 @@ export default function App() {
         <div className="lg:col-span-3 flex flex-col gap-1.5 overflow-y-auto max-h-[350px] lg:max-h-full pr-1">
           <div className="flex items-center justify-between px-1 pb-1">
             <span className="text-xs font-semibold text-stone-500">
-              12 stations
+              {filteredVillages.length} stations
             </span>
           </div>
 
@@ -318,6 +335,11 @@ export default function App() {
           />
         </div>
       </main>
+
+      {/* Persistent App Footer Disclaimer */}
+      <footer className="border-t border-stone-200 bg-white/80 px-4 py-1.5 text-center text-[10px] text-stone-500">
+        Demo simulation based on SIH25001 potable standards. Not intended for direct medical or government advisories.
+      </footer>
     </div>
   );
 }
